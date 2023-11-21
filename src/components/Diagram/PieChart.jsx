@@ -1,48 +1,37 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import "../Diagram/PieChart.css";
-function Piechart({ title }) {
+function Piechart({ title ,portfolio,optimized_portfolio}) {
+  console.log(portfolio)
   const [stdudentSubject, setStudentsubject] = useState([]);
   const [studentMarks, setStudentMarks] = useState([]);
 
   useEffect(() => {
     const sSubject = [];
     const sMarks = [];
-    const getStudentdata = async () => {
-      const reqData = [
-        {
-          subject: "Hindi",
-          marks: "65",
-        },
-        {
-          subject: "Math",
-          marks: "76",
-        },
-        {
-          subject: "English",
-          marks: "85",
-        },
-        {
-          subject: "Science",
-          marks: "65",
-        },
-        {
-          subject: "SocialScience",
-          marks: "64",
-        },
-      ];
-      const resData = reqData;
-      for (let i = 0; i < resData.length; i++) {
-        sSubject.push(resData[i].subject);
-        sMarks.push(parseInt(resData[i].marks));
+    const get_portfolio_data = async () => {
+      const equityList = portfolio.equities?portfolio.equities:[];
+      for (let i = 0; i < equityList.length; i++) {
+        sSubject.push(equityList[i].equity_symbol);
+        sMarks.push(parseInt(equityList[i].amount_invested));
       }
       setStudentsubject(sSubject);
       setStudentMarks(sMarks);
-      //console.log(resData);
     };
 
-    getStudentdata();
-  }, []);
+    const get_optimized_portfolio_data = async () => {
+      const equityList = optimized_portfolio.equities?optimized_portfolio.equities:[];
+      for (let i = 0; i < equityList.length; i++) {
+        sSubject.push(equityList[i].equity_symbol);
+        sMarks.push(parseInt(equityList[i].optimal_weight));
+      }
+      setStudentsubject(sSubject);
+      setStudentMarks(sMarks);
+    };
+
+    portfolio?get_portfolio_data():get_optimized_portfolio_data();
+  }, [portfolio,optimized_portfolio]);
+  
 
   return (
     <React.Fragment>

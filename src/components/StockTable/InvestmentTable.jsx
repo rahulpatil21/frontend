@@ -2,7 +2,7 @@ import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 
 import "./StockTable.css";
 
-export const StockTable = ({ rows, deleteRow, editRow }) => {
+export const InvestmentTable = ({ rows, deleteRow, editRow }) => {
   const rows_sorted = rows.sort((a, b) => b.investment_date.localeCompare(a.investment_date));
   return (
     <div className="table-wrapper">

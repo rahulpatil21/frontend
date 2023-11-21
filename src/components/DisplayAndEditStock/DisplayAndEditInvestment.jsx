@@ -1,12 +1,13 @@
 import { useState,useEffect } from "react";
 import { iconsImgs } from "../../utils/images";
-import { StockTable } from "../StockTable/StockTable";
+import { InvestmentTable } from "../StockTable/InvestmentTable";
 import { EditStock } from "../EditStock/EditStock";
-import {AddStock} from "../AddStock/AddStock";
+import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import Autocomplete from "../AutoComplete";
+import { useReload } from "../../state/ReloadContext";
 
-function DisplayAndEditStock() {
+function DisplayAndEditInvestment() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const token = localStorage.getItem("token");
@@ -14,6 +15,8 @@ function DisplayAndEditStock() {
   const [rowToEdit, setRowToEdit] = useState(null);
   const [stockList, setStockList]=useState([])
   const [refreshSignal, setRefreshSignal] = useState(false);
+  const { handleReload } = useReload();
+  const { reloadFlag } = useReload();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +46,7 @@ function DisplayAndEditStock() {
     };
 
     fetchData();
-  }, [refreshSignal]); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, [reloadFlag]); // Empty dependency array ensures this effect runs only once when the component mounts
 
   const handleDeleteRow = async (targetIndex) => {
     try {
@@ -55,7 +58,8 @@ function DisplayAndEditStock() {
           id: targetIndex.id,
         },
       });
-  
+      
+      handleReload()
       // Update the state to remove the deleted row
       setRows(rows.filter((row) => row.id !== targetIndex.id));
     } catch (error) {
@@ -75,7 +79,7 @@ function DisplayAndEditStock() {
         },
       }
     );
-    setRefreshSignal((prevSignal) => !prevSignal);
+    handleReload();
   } catch (error) {
     console.error('Error making post request:', error.message);
   }
@@ -96,7 +100,7 @@ function DisplayAndEditStock() {
           <img src={iconsImgs.plus} />
         </button>
       </div>
-      <StockTable
+      <InvestmentTable
         rows={rows}
         deleteRow={handleDeleteRow}
       />
@@ -111,7 +115,7 @@ function DisplayAndEditStock() {
         />
       )} */}
       {editModalOpen && (
-        <AddStock
+        <AddInvestment
           stockList={stockList}
           closeModal={() => {
             setEditModalOpen(false);
@@ -125,4 +129,4 @@ function DisplayAndEditStock() {
   );
 }
 
-export default DisplayAndEditStock;
+export default DisplayAndEditInvestment;

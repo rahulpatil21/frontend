@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Autocomplete from "../AutoComplete";
 import "./AddStock.css";
-import CurrentPortfolio from "../CurrentPortfolio/CurrentPortfolio";
-export const AddStock = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
+import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
+export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
   let data={}
   //  {"user": 2,  // Replace with the actual user ID
   //   "equity": 11,  // Replace with the actual equity ID
