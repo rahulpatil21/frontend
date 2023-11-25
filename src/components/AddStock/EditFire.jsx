@@ -2,7 +2,8 @@ import { useState } from "react";
 import Autocomplete from "../Autocomplete/AutoComplete";
 import "./AddStock.css";
 import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
-export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
+export const EditFire = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
+    
   let data={}
   //  {"user": 2,  // Replace with the actual user ID
   //   "equity": 11,  // Replace with the actual equity ID
@@ -12,16 +13,14 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
   // }
   const [formState, setFormState] = useState(
     defaultValue || {
-      equity: 0,
-      purchase_price: "",
-      shares: "",
-      investment_date:"",
+        todays_yearly_requirement: defaultValue.todays_yearly_requirement,
+        duration: defaultValue.duration,
     }
   );
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-    if (formState.equity && formState.purchase_price&& formState.shares && formState.investment_date) {
+    if (formState.todays_yearly_requirement && formState.duration) {
       setErrors("");
       return true;
     } else {
@@ -47,7 +46,6 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
     onSubmit(formState);
 
     closeModal();
-    <CurrentPortfolio />;
   };
 
   const handleSelect = (selectedItem) => {
@@ -67,31 +65,22 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
       <div className="modal">
         <form>
           <div className="form-group">
-            <label className="lg-value lable-title">Stock Name</label>
-            <Autocomplete suggestions={stockList} onSelect={handleSelect}/>
-            <label className="lg-value lable-title">Avg. Price</label>
+            
+            <label className="lg-value lable-title">Yearly Expenses</label>
             <input
-              name="purchase_price"
-              onChange={handleChange}
-              type="number"
-              step="any"
-              min="0.1"
-              value={formState.purchase_price}
-            />
-            <label className="lg-value lable-title">Qty</label>
-            <input
-              name="shares"
+              name="todays_yearly_requirement"
               onChange={handleChange}
               type="number"
               min="1"
-              value={formState.shares}
+              value={formState.todays_yearly_requirement}
             />
-            <label className="lg-value lable-title">Investment date</label>
+            <label className="lg-value lable-title">Number Of Years In Which You Want To Retire</label>
             <input
-              name="investment_date"
+              name="duration"
               onChange={handleChange}
-              type="date"
-              value={formState.investment_date}
+              type="number"
+              min="1"
+              value={formState.duration}
             />
           </div>
 

@@ -3,7 +3,7 @@ import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import "./StockTable.css";
 
 export const PortfolioTable = ({ rows }) => {
-    console.log(rows)
+   
   return (
     <div className="table-wrapper">
       <table className="table">

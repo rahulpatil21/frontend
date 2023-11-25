@@ -29,7 +29,7 @@ const SignUp = () => {
         password,
       });
 
-      console.log('User created successfully:', response.data);
+     
 
       // After successful signup, you might want to redirect the user to the signin page
       navigate('/signin');

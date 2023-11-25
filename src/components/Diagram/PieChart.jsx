@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import "../Diagram/PieChart.css";
 function Piechart({ title ,portfolio,optimized_portfolio}) {
-  console.log(portfolio)
+  
   const [stdudentSubject, setStudentsubject] = useState([]);
   const [studentMarks, setStudentMarks] = useState([]);
 
@@ -13,7 +13,7 @@ function Piechart({ title ,portfolio,optimized_portfolio}) {
       const equityList = portfolio.equities?portfolio.equities:[];
       for (let i = 0; i < equityList.length; i++) {
         sSubject.push(equityList[i].equity_symbol);
-        sMarks.push(parseInt(equityList[i].amount_invested));
+        sMarks.push(parseFloat(equityList[i].amount_invested));
       }
       setStudentsubject(sSubject);
       setStudentMarks(sMarks);
@@ -23,9 +23,10 @@ function Piechart({ title ,portfolio,optimized_portfolio}) {
       const equityList = optimized_portfolio.equities?optimized_portfolio.equities:[];
       for (let i = 0; i < equityList.length; i++) {
         sSubject.push(equityList[i].equity_symbol);
-        sMarks.push(parseInt(equityList[i].optimal_weight));
+        sMarks.push(parseFloat(equityList[i].optimal_weight));
       }
       setStudentsubject(sSubject);
+      
       setStudentMarks(sMarks);
     };
 

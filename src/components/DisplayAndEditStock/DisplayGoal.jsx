@@ -2,64 +2,60 @@ import { useState,useEffect } from "react";
 import { iconsImgs } from "../../utils/images";
 import { InvestmentTable } from "../StockTable/InvestmentTable";
 import { EditStock } from "../EditStock/EditStock";
+import { AddGoal } from "../AddStock/AddGoal";
 import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import Autocomplete from "../Autocomplete/AutoComplete";
 import { useReload } from "../../state/ReloadContext";
-
-function DisplayAndEditInvestment() {
+import { GoalTable } from "../StockTable/GoalTable";
+import { EditGoal } from "../EditStock/EditGoal";
+function DisplayGoal() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const token = localStorage.getItem("token");
   const [rows, setRows] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
   const [stockList, setStockList]=useState([])
+  const [goals, setGoals]=useState([])
   const [refreshSignal, setRefreshSignal] = useState(false);
+  const [defaultEdit, setDefaultEdit] = useState({});
   const { handleReload } = useReload();
   const { reloadFlag } = useReload();
   useEffect(() => {
     const fetchData = async () => {
       try {
         
-        let investment_history = await axios.get("http://127.0.0.1:8000/portfolio/investment/", {
-          headers: {
-            Authorization: `Bearer Token ${token}`,
-          },
-        });
-        let equity_list = await axios.get("http://127.0.0.1:8000/portfolio/equities", {
+        let goals = await axios.get("http://127.0.0.1:8000/wealthwish/goals", {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
         });
 
-        investment_history=investment_history.data
-        equity_list=equity_list.data
-        setStockList(equity_list)
-        investment_history=investment_history.map(investment=>{
-          investment.equity=equity_list.filter(equity=>equity.id===investment.equity)[0]
-          return investment
-        })
-        setRows(investment_history)
+
+        goals=goals.data
+        
+        setGoals(goals)
+        
       } catch (error) {
         console.error("Error fetching stock data:", error.message);
       }
     };
 
     fetchData();
-  }, [reloadFlag]); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, [reloadFlag,refreshSignal]); // Empty dependency array ensures this effect runs only once when the component mounts
 
   const handleDeleteRow = async (targetIndex) => {
     try {
       // Make the DELETE request with the token in the Authorization header
       // and include the ID in a custom 'id' header
-      await axios.delete(`http://127.0.0.1:8000/portfolio/investment/`, {
+      await axios.delete(`http://127.0.0.1:8000/wealthwish/goals/`, {
         headers: {
           Authorization: `Bearer Token ${token}`,
-          id: targetIndex.id,
+          name: targetIndex.name,
         },
       });
       
-      handleReload()
+      setRefreshSignal(x=>!x)
       // Update the state to remove the deleted row
       setRows(rows.filter((row) => row.id !== targetIndex.id));
     } catch (error) {
@@ -67,10 +63,54 @@ function DisplayAndEditInvestment() {
     }
   };
 
+  const handleEditRow = async (targetIndex) => {
+    setDefaultEdit(targetIndex)
+    setModalOpen(true)
+   
+    // try {
+    //   // Make the DELETE request with the token in the Authorization header
+    //   // and include the ID in a custom 'id' header
+    //   await axios.delete(`http://127.0.0.1:8000/wealthwish/goals/`, {
+    //     headers: {
+    //       Authorization: `Bearer Token ${token}`,
+    //       name: targetIndex.name,
+    //     },
+    //   });
+      
+    //   setRefreshSignal(x=>!x)
+    //   // Update the state to remove the deleted row
+    //   setRows(rows.filter((row) => row.id !== targetIndex.id));
+    // } catch (error) {
+    //   console.error("Error deleting investment:", error.message);
+    // }
+  };
+ const ActivateGoal=async (newRow) => {
+    try {
+        let payload={
+            "name":newRow.name,
+            "is_active":newRow.is_active,
+          }
+       
+    const response = await axios.put(
+      'http://127.0.0.1:8000/wealthwish/activate_goals/',
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer Token ${token}`,
+          'Content-Type': 'application/json', // Adjust the content type as needed
+        },
+      }
+    );
+    setRefreshSignal(x=>!x)
+  } catch (error) {
+    console.error('Error making post request:', error.message);
+  }
+ }
   const handleSubmit = async (newRow) => {
   try {
+       
     const response = await axios.post(
-      'http://127.0.0.1:8000/portfolio/investment/',
+      'http://127.0.0.1:8000/wealthwish/goals/',
       newRow,
       {
         headers: {
@@ -79,7 +119,7 @@ function DisplayAndEditInvestment() {
         },
       }
     );
-    handleReload();
+    setRefreshSignal(x=>!x)
   } catch (error) {
     console.error('Error making post request:', error.message);
   }
@@ -92,7 +132,7 @@ function DisplayAndEditInvestment() {
         <span className="lg-value">$ 100,000</span>
       </div> */}
       <div className="grid-c-title">
-        <h3 className="grid-c-title-text">Add New Investment</h3>
+        <h3 className="grid-c-title-text">Add New goal</h3>
         <button
           className="grid-c-title-icon"
           onClick={() => setEditModalOpen(true)}
@@ -100,23 +140,24 @@ function DisplayAndEditInvestment() {
           <img src={iconsImgs.plus} />
         </button>
       </div>
-      <InvestmentTable
-        rows={rows}
+      <GoalTable
+        rows={goals}
         deleteRow={handleDeleteRow}
+        editRow={handleEditRow}
       />
-      {/* {modalOpen && (
-        <EditStock
+      {modalOpen && (
+        <EditGoal
           closeModal={() => {
             setModalOpen(false);
             setRowToEdit(null);
           }}
-          onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null && rows[rowToEdit]}
+          onToggle={ActivateGoal}
+          defaultValue={defaultEdit}
         />
-      )} */}
+      )}
       {editModalOpen && (
-        <AddInvestment
-          stockList={stockList}
+        <AddGoal
+          goalList={goals}
           closeModal={() => {
             setEditModalOpen(false);
             setRowToEdit(null);
@@ -129,4 +170,4 @@ function DisplayAndEditInvestment() {
   );
 }
 
-export default DisplayAndEditInvestment;
+export default DisplayGoal;

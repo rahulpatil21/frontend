@@ -12,8 +12,10 @@ import Info from "./components/Pages/Info/Info";
 function App() {
   return (
     <React.StrictMode>
+      <BrowserRouter>
       <div className="app">
-        <BrowserRouter>
+        
+        
           <Sidebar />
           <div className="main-content">
             <ContentTop />
@@ -26,8 +28,8 @@ function App() {
               <Route path="/info" element={<Info />} />
             </Routes>
           </div>
-        </BrowserRouter>
-      </div>
+        
+      </div></BrowserRouter>
     </React.StrictMode>
   );
 }

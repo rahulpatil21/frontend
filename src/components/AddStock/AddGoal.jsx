@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Autocomplete from "../Autocomplete/AutoComplete";
+import AutocompleteGoal from "../Autocomplete/AutocompleteGoal";
 import "./AddStock.css";
+
 import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
-export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
+export const AddGoal = ({ closeModal, onSubmit, defaultValue ,goalList}) => {
   let data={}
   //  {"user": 2,  // Replace with the actual user ID
   //   "equity": 11,  // Replace with the actual equity ID
@@ -11,17 +12,22 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
   //   "purchase_price": 2960.32
   // }
   const [formState, setFormState] = useState(
-    defaultValue || {
-      equity: 0,
-      purchase_price: "",
-      shares: "",
-      investment_date:"",
+     {
+        name: null,
+        duration_in_months: null,
+        monthly_contribution: null,
+        goal_amount:null,
     }
   );
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-    if (formState.equity && formState.purchase_price&& formState.shares && formState.investment_date) {
+    if (formState.name 
+        && (
+            (formState.duration_in_months&& formState.monthly_contribution) 
+        || (formState.monthly_contribution&& formState.goal_amount)
+        || (formState.duration_in_months && formState.goal_amount)
+        )) {
       setErrors("");
       return true;
     } else {
@@ -42,8 +48,13 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
+    if (!validateForm()) {
+        
+        return;
+    }
+    formState.duration_in_months=formState.duration_in_months?parseInt(formState.duration_in_months, 10):null;
+    formState.monthly_contribution=formState.monthly_contribution?parseFloat(formState.monthly_contribution):null;
+    formState.goal_amount=formState.goal_amount?parseFloat(formState.goal_amount):null;
     onSubmit(formState);
 
     closeModal();
@@ -67,32 +78,36 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
       <div className="modal">
         <form>
           <div className="form-group">
-            <label className="lg-value lable-title">Stock Name</label>
-            <Autocomplete suggestions={stockList} onSelect={handleSelect}/>
-            <label className="lg-value lable-title">Avg. Price</label>
+            <label className="lg-value lable-title">Goal Name</label>
             <input
-              name="purchase_price"
+              name="name"
               onChange={handleChange}
-              type="number"
-              step="any"
-              min="0.1"
-              value={formState.purchase_price}
+              type="text"
+              value={formState.name}
             />
-            <label className="lg-value lable-title">Qty</label>
+            <label className="lg-value lable-title">Duration In Months</label>
             <input
-              name="shares"
+              name="duration_in_months"
               onChange={handleChange}
               type="number"
               min="1"
-              value={formState.shares}
+              value={formState.duration_in_months}
             />
-            <label className="lg-value lable-title">Investment date</label>
+            <label className="lg-value lable-title">Goal Amount</label>
             <input
-              name="investment_date"
+              name="goal_amount"
               onChange={handleChange}
-              type="date"
-              value={formState.investment_date}
+              type="number"
+              min="0.1"
+              value={formState.goal_amount}
             />
+            {/* <label className="lg-value lable-title">Monthly Contribution</label>
+            <input
+              name="monthly_contribution"
+              onChange={handleChange}
+              type="number"
+              value={formState.monthly_contribution}
+            /> */}
           </div>
 
           {errors && <div className="error">{`Please include: ${errors}`}</div>}

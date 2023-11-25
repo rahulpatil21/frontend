@@ -3,6 +3,8 @@ import Cards from "../Cards/Cards";
 import InvestmentHistory from "../CurrentPortfolio/InvestmentHistory";
 import Portfolio from "../CurrentPortfolio/Portfolio";
 import { ReloadProvider } from '../../state/ReloadContext';
+import Goals from '../CurrentPortfolio/Goals';
+import Fire from '../CurrentPortfolio/Fire';
 import "./ContentMain.css";
 const ContentMain = () => {
   const [refreshSignal, setRefreshSignal] = useState(false);
@@ -17,7 +19,8 @@ const ContentMain = () => {
       <Portfolio/>
         <InvestmentHistory />
         
-        <Cards />
+        <Goals />
+        <Fire/>
       </div>
     </div>
     </ReloadProvider>

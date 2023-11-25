@@ -16,21 +16,44 @@ function DisplayPortfolio() {
   const [rowToEdit, setRowToEdit] = useState(null);
   const [portfolio, setPortfolio]=useState({})
   const [optimizedPortfolio, setOptimizedPortfolio]=useState()
-  const { reloadFlag } = useReload();
+  const { reloadFlag,setCurrentCagr,currentCagr,optimisedCagr ,setOptimisedCagr} = useReload();
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let portfolio_reponse = await axios.get("http://127.0.0.1:8000/portfolio/get_portfolio/", {
+        // Step 1: Make the first request
+        const portfolioResponse = await axios.get("http://127.0.0.1:8000/portfolio/get_portfolio/", {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
         });
+
+        // Step 2: Extract data from the first response
+        const dataToSend = portfolioResponse.data; 
+       
+        // Step 3: Make the second request with data from the first response
+        const secondResponse = await axios.post("http://127.0.0.1:8000/portfolio/get_optimised_portfolio/", 
+          dataToSend,
+         {
+          headers: {
+            Authorization: `Bearer Token ${token}`,
+            // Add any additional headers here
+          },
+        });
+
+        // Step 4: Handle the response of the second request
         
-        setPortfolio(portfolio_reponse.data)
-        setRows(portfolio_reponse.data.equities)
+         
+
+          // Step 5: Store in portfolio (assuming you want to store it in state)
+          setPortfolio(secondResponse.data);
+          setRows(secondResponse.data.equities);
+          setCurrentCagr(secondResponse.data.current_return)
+          setOptimisedCagr(secondResponse.data.optimised_return)
         
+
       } catch (error) {
-        console.error("Error fetching portfolio data:", error.message);
+        console.error("Error fetching data:", error.message);
       }
     };
 
@@ -50,7 +73,7 @@ function DisplayPortfolio() {
       <PortfolioTable rows={rows}/>
       <ComparePieChart  
       portfolio={portfolio}
-       optimized_portfolio={optimizedPortfolio?optimizedPortfolio:undefined}
+       optimized_portfolio={portfolio.is_optimised?portfolio:undefined}
        />
     </div>
   );
