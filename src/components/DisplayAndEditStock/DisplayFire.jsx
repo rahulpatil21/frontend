@@ -5,7 +5,7 @@ import { PortfolioTable } from "../StockTable/PortfolioTable";
 import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import { EditFire } from "../AddStock/EditFire";
-import { useReload, } from "../../state/ReloadContext";
+import { useReload, } from "../../context/ReloadContext";
 import Piechart from "../Diagram/PieChart";
 import ComparePieChart from "../Diagram/ComparePieChart";
 import { BsFillPencilFill } from "react-icons/bs";

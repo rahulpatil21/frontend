@@ -6,7 +6,7 @@ import { AddGoal } from "../AddStock/AddGoal";
 import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import Autocomplete from "../Autocomplete/AutoComplete";
-import { useReload } from "../../state/ReloadContext";
+import { useReload } from "../../context/ReloadContext";
 import { GoalTable } from "../StockTable/GoalTable";
 import { EditGoal } from "../EditStock/EditGoal";
 function DisplayGoal() {

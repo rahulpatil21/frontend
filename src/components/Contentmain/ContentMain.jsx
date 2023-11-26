@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cards from "../Cards/Cards";
 import InvestmentHistory from "../CurrentPortfolio/InvestmentHistory";
 import Portfolio from "../CurrentPortfolio/Portfolio";
-import { ReloadProvider } from '../../state/ReloadContext';
+import { ReloadProvider } from '../../context/ReloadContext';
 import Goals from '../CurrentPortfolio/Goals';
 import Fire from '../CurrentPortfolio/Fire';
 import "./ContentMain.css";

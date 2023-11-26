@@ -5,7 +5,7 @@ import { EditStock } from "../EditStock/EditStock";
 import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import Autocomplete from "../Autocomplete/AutoComplete";
-import { useReload } from "../../state/ReloadContext";
+import { useReload } from "../../context/ReloadContext";
 
 function DisplayAndEditInvestment() {
   const [modalOpen, setModalOpen] = useState(false);
