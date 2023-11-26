@@ -1,4 +1,4 @@
-import { DisplayStock } from "../../StockTable/DisplayStock";
+
 import "./OptimizePortpolio.css";
 import ComparePieChart from "../../Diagram/ComparePieChart";
 import Piechart from "../../Diagram/PieChart";
@@ -46,15 +46,8 @@ const OptimizePortpolio = () => {
   ]);
   return (
     <div className="main-content-holder">
-      <div className="content-grid-one ">
-        <DisplayStock rows={rows} header={"Old Portpolio"} />
-        <DisplayStock rows={updaterows} header={"Optimize Portpolio"} />
-        <br />
-      </div>
-      <div className="content-grid-one ">
-        <ComparePieChart header={"Data"} />
-        <ComparePieChart header={"By Weight"} />
-      </div>{" "}
+      
+      
       <div className="content-grid-one ">
         <ComparePieChart header={"Data"} />
       </div>

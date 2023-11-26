@@ -1,10 +1,10 @@
 import { useState,useEffect } from "react";
 import { iconsImgs } from "../../utils/images";
 import { InvestmentTable } from "../StockTable/InvestmentTable";
-import { EditStock } from "../EditStock/EditStock";
+
 import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
-import Autocomplete from "../Autocomplete/AutoComplete";
+
 import { useReload } from "../../context/ReloadContext";
 
 function DisplayAndEditInvestment() {
@@ -104,16 +104,7 @@ function DisplayAndEditInvestment() {
         rows={rows}
         deleteRow={handleDeleteRow}
       />
-      {/* {modalOpen && (
-        <EditStock
-          closeModal={() => {
-            setModalOpen(false);
-            setRowToEdit(null);
-          }}
-          onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null && rows[rowToEdit]}
-        />
-      )} */}
+      
       {editModalOpen && (
         <AddInvestment
           stockList={stockList}

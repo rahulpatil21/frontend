@@ -6,7 +6,7 @@ import SignIn from "./components/User/SignIn";
 import SignUp from "./components/User/SignUp";
 import React from "react";
 
-import OptimizePortpolio from "./components/Pages/OptimizePortpolio/OptimizePortpolio";
+import OptimizePortpolio from "./components/Pages/OptimizePortpolio/OptimizePortpolio";//when removing this getting unexpected styles error for pie charts
 
 function App() {
   return (

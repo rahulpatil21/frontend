@@ -1,11 +1,10 @@
 import { useState,useEffect } from "react";
 import { iconsImgs } from "../../utils/images";
-import { InvestmentTable } from "../StockTable/InvestmentTable";
-import { EditStock } from "../EditStock/EditStock";
+
 import { AddGoal } from "../AddStock/AddGoal";
-import {AddInvestment} from "../AddStock/AddInvestment";
+
 import axios from "axios";
-import Autocomplete from "../Autocomplete/AutoComplete";
+
 import { useReload } from "../../context/ReloadContext";
 import { GoalTable } from "../StockTable/GoalTable";
 import { EditGoal } from "../EditStock/EditGoal";
@@ -15,7 +14,7 @@ function DisplayGoal() {
   const token = localStorage.getItem("token");
   const [rows, setRows] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
-  const [stockList, setStockList]=useState([])
+  
   const [goals, setGoals]=useState([])
   const [refreshSignal, setRefreshSignal] = useState(false);
   const [defaultEdit, setDefaultEdit] = useState({});
@@ -127,10 +126,6 @@ function DisplayGoal() {
   
   return (
     <div>
-      {/* <div className="grid-c-top text-silver-v1">
-        <h2 className="lg-value">Total Investment</h2>
-        <span className="lg-value">$ 100,000</span>
-      </div> */}
       <div className="grid-c-title">
         <h3 className="grid-c-title-text">Add New goal</h3>
         <button
