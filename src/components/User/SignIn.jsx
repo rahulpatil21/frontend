@@ -19,11 +19,17 @@ const SignIn = () => {
     try {
       const response = await api.post('user/signin/', { username, password });
       const token = response.data.token;
+      const first_name=response.data.first_name;
+      const is_superuser=response.data.is_superuser;
+      const is_staff=response.data.is_staff;
 
       
 
       // Store the token in localStorage
       localStorage.setItem('token', token);
+      localStorage.setItem('first_name', first_name);
+      localStorage.setItem('is_superuser', is_superuser);
+      localStorage.setItem('is_staff', is_staff);
       // Redirect the user to another page
       navigate('/');
       

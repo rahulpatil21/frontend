@@ -1,5 +1,4 @@
 import "./App.css";
-import Sidebar from "./layout/Sidebar/Sidebar";
 import ContentTop from "./components/ContentTop/ContentTop";
 import { BrowserRouter, Routes, Route,useLocation } from "react-router-dom";
 import ContentMain from "./components/Contentmain/ContentMain";

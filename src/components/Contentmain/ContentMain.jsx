@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Cards from "../Cards/Cards";
 import InvestmentHistory from "../CurrentPortfolio/InvestmentHistory";
 import Portfolio from "../CurrentPortfolio/Portfolio";
 import { ReloadProvider } from '../../context/ReloadContext';

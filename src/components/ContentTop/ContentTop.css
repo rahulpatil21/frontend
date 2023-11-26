@@ -31,4 +31,5 @@
 .content-top-left {
   display: flex;
   align-items: center;
+  color: white;
 }
