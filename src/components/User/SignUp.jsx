@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
-const BASE_URL = 'http://127.0.0.1:8000/';
+import { url } from '../../utils/url';
+const BASE_URL = url;
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -39,7 +39,7 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="compare-pie-container"style={{ display: 'flex', flexDirection: 'column', color: 'grey' }}>
       <form onSubmit={handleSignUp}>
         <label>
           First Name:
@@ -66,11 +66,13 @@ const SignUp = () => {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         <br />
-        <button type="submit">Sign Up</button>
+        <button type="submit" style={{ border: '2px solid grey', color: 'grey', backgroundColor: 'white' }}>
+      Sign Up
+    </button>
       </form>
 
       <p>
-        Already have an account? <Link to="/signin">Sign In</Link>
+        Already have an account? <Link to="/signin" style={{ color:'blue' }}>Sign In</Link>
       </p>
     </div>
   );

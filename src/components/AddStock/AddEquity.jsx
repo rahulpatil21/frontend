@@ -1,16 +1,18 @@
 import { useState } from "react";
 import "./AddStock.css";
-export const EditFire = ({ closeModal, onSubmit, defaultValue }) => {
+import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
+export const AddEquity = ({ closeModal, onSubmit, defaultValue }) => {
+  
   const [formState, setFormState] = useState(
     defaultValue || {
-        todays_yearly_requirement: defaultValue.todays_yearly_requirement,
-        duration: defaultValue.duration,
+      title: "",
+      symbol: ""
     }
   );
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-    if (formState.todays_yearly_requirement && formState.duration) {
+    if (formState.title && formState.symbol) {
       setErrors("");
       return true;
     } else {
@@ -36,8 +38,8 @@ export const EditFire = ({ closeModal, onSubmit, defaultValue }) => {
     onSubmit(formState);
 
     closeModal();
+    <CurrentPortfolio />;
   };
-
   return (
     <div
       className="modal-container"
@@ -49,22 +51,21 @@ export const EditFire = ({ closeModal, onSubmit, defaultValue }) => {
         <form>
           <div className="form-group">
             
-            <label className="lg-value lable-title">Yearly Expenses</label>
+            <label className="lg-value lable-title">Title</label>
             <input
-              name="todays_yearly_requirement"
+              name="title"
               onChange={handleChange}
-              type="number"
-              min="1"
-              value={formState.todays_yearly_requirement}
+              type="text"
+              value={formState.title}
             />
-            <label className="lg-value lable-title">Number Of Years In Which You Want To Retire</label>
+            <label className="lg-value lable-title">Symbol</label>
             <input
-              name="duration"
+              name="symbol"
               onChange={handleChange}
-              type="number"
-              min="1"
-              value={formState.duration}
+              type="text"
+              value={formState.symbol}
             />
+            
           </div>
 
           {errors && <div className="error">{`Please include: ${errors}`}</div>}

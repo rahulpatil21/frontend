@@ -1,6 +1,4 @@
 import "./CurrentPortfolio.css";
-
-import DisplayAndEditInvestment from "../DisplayAndEditStock/DisplayAndEditInvestment";
 import DisplayGoal from "../DisplayAndEditStock/DisplayGoal";
 
 const Goals = () => {

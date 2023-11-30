@@ -1,6 +1,4 @@
 import "./CurrentPortfolio.css";
-
-import DisplayPortfolio from "../DisplayAndEditStock/DisplayPortfolio";
 import DisplayFire from "../DisplayAndEditStock/DisplayFire";
 
 const Fire = () => {

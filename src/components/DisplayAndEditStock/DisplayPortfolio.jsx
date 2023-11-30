@@ -1,28 +1,21 @@
 import { useState,useEffect } from "react";
-import { iconsImgs } from "../../utils/images";
-import { InvestmentTable } from "../StockTable/InvestmentTable";
 import { PortfolioTable } from "../StockTable/PortfolioTable";
-import {AddInvestment} from "../AddStock/AddInvestment";
 import axios from "axios";
 import { useReload } from "../../context/ReloadContext";
-import Piechart from "../Diagram/PieChart";
 import ComparePieChart from "../Diagram/ComparePieChart";
-
+import PortfolioLine from "../Diagram/PortfolioLine";
+import { url } from "../../utils/url";
 function DisplayPortfolio() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const token = localStorage.getItem("token");
   const [rows, setRows] = useState([]);
-  const [rowToEdit, setRowToEdit] = useState(null);
   const [portfolio, setPortfolio]=useState({})
-  const [optimizedPortfolio, setOptimizedPortfolio]=useState()
-  const { reloadFlag,setCurrentCagr,currentCagr,optimisedCagr ,setOptimisedCagr} = useReload();
+  const { reloadFlag,setCurrentCagr,setOptimisedCagr,setMyPortfolio} = useReload();
   
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Step 1: Make the first request
-        const portfolioResponse = await axios.get("http://127.0.0.1:8000/portfolio/get_portfolio/", {
+        const portfolioResponse = await axios.get(`${url}portfolio/get_portfolio/`, {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
@@ -32,7 +25,7 @@ function DisplayPortfolio() {
         const dataToSend = portfolioResponse.data; 
        
         // Step 3: Make the second request with data from the first response
-        const secondResponse = await axios.post("http://127.0.0.1:8000/portfolio/get_optimised_portfolio/", 
+        const secondResponse = await axios.post(`${url}portfolio/get_optimised_portfolio/`, 
           dataToSend,
          {
           headers: {
@@ -44,9 +37,10 @@ function DisplayPortfolio() {
         // Step 4: Handle the response of the second request
         
          
-
+          console.log(secondResponse.data)
           // Step 5: Store in portfolio (assuming you want to store it in state)
           setPortfolio(secondResponse.data);
+          setMyPortfolio(secondResponse.data)
           setRows(secondResponse.data.equities);
           setCurrentCagr(secondResponse.data.current_return)
           setOptimisedCagr(secondResponse.data.optimised_return)
@@ -75,6 +69,7 @@ function DisplayPortfolio() {
       portfolio={portfolio}
        optimized_portfolio={portfolio.is_optimised?portfolio:undefined}
        />
+       {portfolio.total_portfolio_value?<PortfolioLine portfolio={portfolio}/>:<></>}
     </div>
   );
 }

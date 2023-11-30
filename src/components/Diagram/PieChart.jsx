@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import "../Diagram/PieChart.css";
 function Piechart({ title ,portfolio,optimized_portfolio}) {
-  
   const [stdudentSubject, setStudentsubject] = useState([]);
   const [studentMarks, setStudentMarks] = useState([]);
 

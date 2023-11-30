@@ -1,12 +1,12 @@
 import { useState,useEffect } from "react";
 import { iconsImgs } from "../../utils/images";
-import { InvestmentTable } from "../StockTable/InvestmentTable";
-import {AddInvestment} from "../AddStock/AddInvestment";
+import { EquityTable } from "../StockTable/EquityTable";
+import { AddEquity } from "../AddStock/AddEquity";
 import axios from "axios";
-import { useReload } from "../../context/ReloadContext";
 import { url } from "../../utils/url";
+import { useReload } from "../../context/ReloadContext";
 
-function DisplayAndEditInvestment() {
+function DisplayAndEditEquities() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const token = localStorage.getItem("token");
   const [rows, setRows] = useState([]);
@@ -18,25 +18,17 @@ function DisplayAndEditInvestment() {
     const fetchData = async () => {
       try {
         
-        let investment_history = await axios.get(`${url}portfolio/investment/`, {
-          headers: {
-            Authorization: `Bearer Token ${token}`,
-          },
-        });
         let equity_list = await axios.get(`${url}portfolio/equities`, {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
         });
 
-        investment_history=investment_history.data
+        
         equity_list=equity_list.data
         setStockList(equity_list)
-        investment_history=investment_history.map(investment=>{
-          investment.equity=equity_list.filter(equity=>equity.id===investment.equity)[0]
-          return investment
-        })
-        setRows(investment_history)
+        
+        setRows(equity_list)
       } catch (error) {
         console.error("Error fetching stock data:", error.message);
       }
@@ -46,25 +38,28 @@ function DisplayAndEditInvestment() {
   }, [reloadFlag]); // Empty dependency array ensures this effect runs only once when the component mounts
 
   const handleDeleteRow = async (targetIndex) => {
+    console.log(targetIndex)
     try {
-      await axios.delete(`${url}portfolio/investment/`, {
-        headers: {
-          Authorization: `Bearer Token ${token}`,
-          id: targetIndex.id,
-        },
-      });
-      
-      handleReload()
-      setRows(rows.filter((row) => row.id !== targetIndex.id));
-    } catch (error) {
-      console.error("Error deleting investment:", error.message);
-    }
+        const response = await axios.delete(`${url}portfolio/equities/`, {
+          params: {
+            symbol: targetIndex.symbol,
+          },
+          headers: {
+            Authorization: `Bearer Token ${token}`,
+          },
+        });
+        handleReload()
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error deleting data:', error.message);
+      }
   };
 
   const handleSubmit = async (newRow) => {
+    console.log(newRow)
   try {
     const response = await axios.post(
-      `${url}portfolio/investment/`,
+      `${url}portfolio/equities/`,
       newRow,
       {
         headers: {
@@ -82,7 +77,7 @@ function DisplayAndEditInvestment() {
   return (
     <div>
       <div className="grid-c-title">
-        <h3 className="grid-c-title-text">Add New Investment</h3>
+        <h3 className="grid-c-title-text">Add New Equity</h3>
         <button
           className="grid-c-title-icon"
           onClick={() => setEditModalOpen(true)}
@@ -90,13 +85,12 @@ function DisplayAndEditInvestment() {
           <img src={iconsImgs.plus} />
         </button>
       </div>
-      <InvestmentTable
+      <EquityTable
         rows={rows}
         deleteRow={handleDeleteRow}
       />
-      
       {editModalOpen && (
-        <AddInvestment
+        <AddEquity
           stockList={stockList}
           closeModal={() => {
             setEditModalOpen(false);
@@ -110,4 +104,4 @@ function DisplayAndEditInvestment() {
   );
 }
 
-export default DisplayAndEditInvestment;
+export default DisplayAndEditEquities;

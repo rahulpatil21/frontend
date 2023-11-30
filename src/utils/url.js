@@ -1,0 +1,1 @@
+export const url = "https://mybhdreamamc.el.r.appspot.com/"

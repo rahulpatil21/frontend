@@ -5,25 +5,34 @@ import { ReloadProvider } from '../../context/ReloadContext';
 import Goals from '../CurrentPortfolio/Goals';
 import Fire from '../CurrentPortfolio/Fire';
 import Admin from '../CurrentPortfolio/Admin';
+import EquityManagement from '../CurrentPortfolio/EquityManagement';
+import Employee from '../CurrentPortfolio/Employee';
+import Insights from '../CurrentPortfolio/Insignts';
 import "./ContentMain.css";
 const ContentMain = () => {
-  const [refreshSignal, setRefreshSignal] = useState(false);
-  const toggleRefreshSignal = () => {
-    setRefreshSignal((prevSignal) => !prevSignal);
-  };
-  useEffect(() => {
-    console.log(localStorage.getItem("is_superuser"))
-  },[refreshSignal])
+  
   return (
     <ReloadProvider>
     <div className="main-content-holder">
       <div className="content-grid-one">
-       {JSON.parse(localStorage.getItem("is_superuser"))? <Admin/>:<></>}
-      <Portfolio/>
+       {JSON.parse(localStorage.getItem("is_superuser"))?
+       <>
+        <Admin/>
+        <EquityManagement/>
+       </> :<></>}
+       {JSON.parse(localStorage.getItem("is_superuser"))||JSON.parse(localStorage.getItem("is_staff"))?
+       <>
+        <Employee/>
+       </> :<></>}
+       {!(JSON.parse(localStorage.getItem("is_superuser"))||JSON.parse(localStorage.getItem("is_staff")))?
+       <>
+       <Insights/>
+        <Portfolio/>
         <InvestmentHistory />
-        
         <Goals />
         <Fire/>
+      </>:<></>}
+      
       </div>
     </div>
     </ReloadProvider>

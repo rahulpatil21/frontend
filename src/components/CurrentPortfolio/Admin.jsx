@@ -9,7 +9,6 @@ const Admin = () => {
       <div className="grid-c-title">
         <h3 className="grid-c-title-text">Admin Dashboard</h3>
       </div>
-
       <DisplayUser/>
     </div>
   );

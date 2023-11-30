@@ -1,7 +1,4 @@
-import { iconsImgs } from "../../utils/images";
 import "./ContentTop.css";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
 const ContentTop = () => {
  
   return (

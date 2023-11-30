@@ -1,16 +1,7 @@
 import { useState } from "react";
-import AutocompleteGoal from "../Autocomplete/AutocompleteGoal";
 import "./AddStock.css";
 
-import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
-export const AddGoal = ({ closeModal, onSubmit, defaultValue ,goalList}) => {
-  let data={}
-  //  {"user": 2,  // Replace with the actual user ID
-  //   "equity": 11,  // Replace with the actual equity ID
-  //   "investment_date": "2023-05-04",  // Replace with the actual date
-  //   "shares": 1000,
-  //   "purchase_price": 2960.32
-  // }
+export const AddGoal = ({ closeModal, onSubmit}) => {
   const [formState, setFormState] = useState(
      {
         name: null,
@@ -58,14 +49,6 @@ export const AddGoal = ({ closeModal, onSubmit, defaultValue ,goalList}) => {
     onSubmit(formState);
 
     closeModal();
-    <CurrentPortfolio />;
-  };
-
-  const handleSelect = (selectedItem) => {
-    // Do something with the selected item
-    
-    formState["equity"]=selectedItem.id;
-    
   };
 
   return (
@@ -101,13 +84,6 @@ export const AddGoal = ({ closeModal, onSubmit, defaultValue ,goalList}) => {
               min="0.1"
               value={formState.goal_amount}
             />
-            {/* <label className="lg-value lable-title">Monthly Contribution</label>
-            <input
-              name="monthly_contribution"
-              onChange={handleChange}
-              type="number"
-              value={formState.monthly_contribution}
-            /> */}
           </div>
 
           {errors && <div className="error">{`Please include: ${errors}`}</div>}

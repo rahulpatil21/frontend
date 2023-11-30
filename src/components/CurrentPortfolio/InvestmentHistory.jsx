@@ -1,7 +1,5 @@
 import "./CurrentPortfolio.css";
-
 import DisplayAndEditInvestment from "../DisplayAndEditStock/DisplayAndEditInvestment";
-
 
 const InvestmentHistory = () => {
   return (
@@ -9,7 +7,6 @@ const InvestmentHistory = () => {
       <div className="grid-c-title">
         <h3 className="grid-c-title-text">Investment History</h3>
       </div>
-      
       <DisplayAndEditInvestment 
       />
     </div>

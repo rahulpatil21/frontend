@@ -4,7 +4,7 @@ import { iconsImgs } from "../../utils/images";
 import { AddGoal } from "../AddStock/AddGoal";
 
 import axios from "axios";
-
+import { url } from "../../utils/url";
 import { useReload } from "../../context/ReloadContext";
 import { GoalTable } from "../StockTable/GoalTable";
 import { EditGoal } from "../EditStock/EditGoal";
@@ -19,12 +19,12 @@ function DisplayGoal() {
   const [refreshSignal, setRefreshSignal] = useState(false);
   const [defaultEdit, setDefaultEdit] = useState({});
   const { handleReload } = useReload();
-  const { reloadFlag } = useReload();
+  const { reloadFlag,setMyyGoals } = useReload();
   useEffect(() => {
     const fetchData = async () => {
       try {
         
-        let goals = await axios.get("http://127.0.0.1:8000/wealthwish/goals", {
+        let goals = await axios.get(`${url}wealthwish/goals`, {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
@@ -34,6 +34,7 @@ function DisplayGoal() {
         goals=goals.data
         
         setGoals(goals)
+        setMyyGoals(goals)
         
       } catch (error) {
         console.error("Error fetching stock data:", error.message);
@@ -41,13 +42,12 @@ function DisplayGoal() {
     };
 
     fetchData();
-  }, [reloadFlag,refreshSignal]); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, [reloadFlag,refreshSignal]); 
 
   const handleDeleteRow = async (targetIndex) => {
     try {
-      // Make the DELETE request with the token in the Authorization header
-      // and include the ID in a custom 'id' header
-      await axios.delete(`http://127.0.0.1:8000/wealthwish/goals/`, {
+      
+      await axios.delete(`${url}wealthwish/goals/`, {
         headers: {
           Authorization: `Bearer Token ${token}`,
           name: targetIndex.name,
@@ -55,7 +55,6 @@ function DisplayGoal() {
       });
       
       setRefreshSignal(x=>!x)
-      // Update the state to remove the deleted row
       setRows(rows.filter((row) => row.id !== targetIndex.id));
     } catch (error) {
       console.error("Error deleting investment:", error.message);
@@ -65,23 +64,6 @@ function DisplayGoal() {
   const handleEditRow = async (targetIndex) => {
     setDefaultEdit(targetIndex)
     setModalOpen(true)
-   
-    // try {
-    //   // Make the DELETE request with the token in the Authorization header
-    //   // and include the ID in a custom 'id' header
-    //   await axios.delete(`http://127.0.0.1:8000/wealthwish/goals/`, {
-    //     headers: {
-    //       Authorization: `Bearer Token ${token}`,
-    //       name: targetIndex.name,
-    //     },
-    //   });
-      
-    //   setRefreshSignal(x=>!x)
-    //   // Update the state to remove the deleted row
-    //   setRows(rows.filter((row) => row.id !== targetIndex.id));
-    // } catch (error) {
-    //   console.error("Error deleting investment:", error.message);
-    // }
   };
  const ActivateGoal=async (newRow) => {
     try {
@@ -91,7 +73,7 @@ function DisplayGoal() {
           }
        
     const response = await axios.put(
-      'http://127.0.0.1:8000/wealthwish/activate_goals/',
+      `${url}wealthwish/activate_goals/`,
       payload,
       {
         headers: {
@@ -107,14 +89,14 @@ function DisplayGoal() {
  }
   const handleSubmit = async (newRow) => {
   try {
-       
+       console.log(newRow)
     const response = await axios.post(
-      'http://127.0.0.1:8000/wealthwish/goals/',
+      `${url}wealthwish/goals/`,
       newRow,
       {
         headers: {
           Authorization: `Bearer Token ${token}`,
-          'Content-Type': 'application/json', // Adjust the content type as needed
+          'Content-Type': 'application/json', 
         },
       }
     );

@@ -1,15 +1,7 @@
 import { useState } from "react";
 import Autocomplete from "../Autocomplete/AutoComplete";
 import "./AddStock.css";
-import CurrentPortfolio from "../CurrentPortfolio/InvestmentHistory";
 export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) => {
-  let data={}
-  //  {"user": 2,  // Replace with the actual user ID
-  //   "equity": 11,  // Replace with the actual equity ID
-  //   "investment_date": "2023-05-04",  // Replace with the actual date
-  //   "shares": 1000,
-  //   "purchase_price": 2960.32
-  // }
   const [formState, setFormState] = useState(
     defaultValue || {
       equity: 0,
@@ -45,16 +37,11 @@ export const AddInvestment = ({ closeModal, onSubmit, defaultValue ,stockList}) 
     if (!validateForm()) return;
 
     onSubmit(formState);
-
-    closeModal();
-    <CurrentPortfolio />;
+    closeModal();  
   };
 
   const handleSelect = (selectedItem) => {
-    // Do something with the selected item
-    
     formState["equity"]=selectedItem.id;
-    
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 
-import { PortfolioTable } from "../StockTable/PortfolioTable";
+import { url } from "../../utils/url";
 import { UserTable } from "../StockTable/UserTable";
 import axios from "axios";
 import { useReload } from "../../context/ReloadContext";
@@ -37,7 +37,7 @@ function DisplayUser() {
     const fetchData = async () => {
       try {
         // Step 1: Make the first request
-        const portfolioResponse = await axios.get("http://127.0.0.1:8000/user/", {
+        const portfolioResponse = await axios.get(`${url}user/`, {
           headers: {
             Authorization: `Bearer Token ${token}`,
           },
@@ -70,7 +70,7 @@ function DisplayUser() {
     try {
       // Step 1: Make the first request
       const portfolioResponse = await axios.post(
-          "http://127.0.0.1:8000/user/update_user_role/",
+          `${url}user/update_user_role/`,
           
               targetIndex
           ,
